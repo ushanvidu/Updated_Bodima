@@ -1,4 +1,4 @@
-import './App.css'
+
 import Navbar from "./Navbar/Navbar.jsx"
 import Body from "./Body/Body.jsx"
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -6,6 +6,8 @@ import LoginPage from "./Signin/Signin.jsx";
 import Rules from "./Rules/Rules.jsx";
 import Contact from "./Contact /Contact.jsx";
 import Rooms from "./Rooms/Rooms.jsx";
+import User from "./User/User.jsx";
+import Admin from "./Admin/Admin.jsx";
 
 
 
@@ -28,6 +30,8 @@ function App() {
         <Route path="/rules" element={<Rules/>}/>
         <Route path="/contact" element={<Contact/>}/>
         <Route path="/rooms" element={<Rooms/>}/>
+        <Route path="/user" element={<User/>}/>
+        <Route path="/admin" element={<Admin/>}></Route>
       </Routes>
       </div>
       </Router>

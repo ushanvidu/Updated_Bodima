@@ -152,7 +152,7 @@ body {
 }
 
 /* Buttons */
-.login-button {
+.login1-button {
     background-color: var(--primary);
     color: white;
     border: none;
@@ -166,12 +166,12 @@ body {
     overflow: hidden;
 }
 
-.login-button:hover {
+.login1-button:hover {
     background-color: var(--secondary);
     transform: translateY(-2px);
 }
 
-.login-button.loading {
+.login1-button.loading {
     pointer-events: none;
     color: transparent;
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link }                from 'react-router-dom'; // Import Link from react-router-dom
 import './Navbar.css';
-import { useNavigate } from 'react-router-dom';
+
 
 function Navbar() {
     const [scrolled, setScrolled] = useState(false);
@@ -39,19 +39,19 @@ function Navbar() {
                     </button>
 
                     <div className={`right ${mobileMenuOpen ? 'open' : ''}`}>
-                        <Link to="/rooms" className="nav-link"> {/* Changed a to Link */}
+                        <Link to="/rooms" className="nav-link">
                             <span className="link-text">Rooms</span>
                             <span className="link-underline"></span>
                         </Link>
-                        <Link to="/rules" className="nav-link"> {/* Changed a to Link */}
+                        <Link to="/rules" className="nav-link">
                             <span className="link-text">Rules</span>
                             <span className="link-underline"></span>
                         </Link>
-                        <Link to="/contact" className="nav-link"> {/* Changed a to Link */}
+                        <Link to="/contact" className="nav-link">
                             <span className="link-text">Contact Us</span>
                             <span className="link-underline"></span>
                         </Link>
-                        <Link to="/login" className="nav-link signin-btn"> {/* Changed to Link and updated path */}
+                        <Link to="/login" className="nav-link signin-btn">
                             <span className="link-text">Login</span>
                             <span className="link-underline"></span>
                         </Link>
