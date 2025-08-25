@@ -57,8 +57,8 @@ const Contact = () => {
                             <div className="info-icon">📞</div>
                             <h3 className="info-title">Phone Numbers</h3>
                             <p className="info-text">
-                                Office: +94 71 536 7306<br />
-                                Manager: +94 71 104 0942
+                                Office: <a href="tel:+94715367306" className="text-blue-600 hover:underline">+94 71 536 7306</a><br />
+                                Manager: <a href="tel:+94711040942" className="text-blue-600 hover:underline">+94 71 104 0942</a>
                             </p>
                         </div>
 
@@ -68,7 +68,8 @@ const Contact = () => {
                             <p className="info-text">
                                 Inquiries: info@bodima.lk<br />
                                 Support: support@bodima.lk<br/>
-                                Email Address: ushanviduranga123@gmail.com
+
+                                Email Address: <a href= "ushanviduranga123@gmail.com" className="text-blue-600 hover:underline">ushanviduranga123@gmail.com</a>
                             </p>
                         </div>
 
