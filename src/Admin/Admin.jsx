@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
-import { Button, Container, Row, Col, Card, Modal, Form } from "react-bootstrap";
+import { Button, Container, Row, Col, Card, Modal, Form, Spinner } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Admin.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
+
+
+
 
 export default function Admin() {
     const [showModal, setShowModal] = useState(false);
@@ -18,6 +21,7 @@ export default function Admin() {
     const[payment, setPayment] = useState("");
     const[phone, setPhone] = useState("");
     const [,setError] = useState("");
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -50,7 +54,11 @@ export default function Admin() {
                 setError(data.error||'login failed')
                 console.error('Error logged in', data);
 
-            const response2 = await fetch(`http://localhost:8090/api/auth/login`, {
+
+
+
+
+            const response2 = await fetch(`http://localhost:8090/api/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -89,7 +97,7 @@ export default function Admin() {
             try {
                 const parsed = JSON.parse(stored);
                 setUser(parsed);
-                
+
                 // admind blnwa
                 if (parsed.role !== 'admin') {
                     alert('Access denied. Admin privileges required.');
@@ -128,7 +136,7 @@ export default function Admin() {
 
     const handleCloseModal = () => setShowModal(false);
 
-    // Modal content definitions
+
     const modalContents = {
         addUser: {
             title: "Add New User",
@@ -148,7 +156,15 @@ export default function Admin() {
         },
         updateUser: {
             title: "Update User",
-            body: <UserForm isEdit={true} handleSubmit={handleSubmit} />
+            body: <UserForm isEdit={true} handleSubmit={handleSubmit}
+                            name={name} setName={setName}
+                            email={email} setEmail={setEmail}
+                            password={password} setPassword={setPassword}
+                            phone={phone} setPhone={setPhone}
+                            room={room} setRoom={setRoom}
+                            admin={admin} setAdmin={setAdmin}
+                            payment={payment} setPayment={setPayment}
+            />
         },
         addPayment: {
             title: "Add Payment Month",
@@ -165,10 +181,10 @@ export default function Admin() {
                             <div className="d-flex justify-content-between align-items-center">
                                 <div>
                                     <h1>Admin Dashboard</h1>
-                                    <p>Welcome, {user?.userName || 'Administrator'}</p>
+                                    <p>Welcome, {user?.name || 'Administrator'}</p>
                                 </div>
-                                <Button 
-                                    variant="outline-danger" 
+                                <Button
+                                    variant="outline-danger"
                                     onClick={() => {
                                         localStorage.removeItem('user');
                                         navigate('/login');
@@ -213,7 +229,7 @@ export default function Admin() {
                             </Col>
                             <Col md={6} lg={3} className="mb-4">
                                 <AdminCard
-                                    title="Add Payment"
+                                    title="Add Payment month"
                                     icon="credit-card"
                                     description="Add payment month for users"
                                     variant="success"
@@ -304,54 +320,295 @@ function UserForm({
     );
 }
 
+
+
+
+
+
 function RemoveUserForm() {
+    const [users, setUsers] = useState([]);
+    const [selectedUser, setSelectedUser] = useState("");
+    const [confirmDelete, setConfirmDelete] = useState(false);
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+
+
+    const fetchUsers = async () => {
+        try {
+            setLoading(true);
+            const response = await fetch("http://localhost:8090/api/users");
+
+            if (response.ok) {
+                const data = await response.json();
+                setUsers(data);
+                setError("");
+            } else {
+                setError("Failed to fetch users");
+                console.error("Fetch users failed:", response.status);
+            }
+        } catch (err) {
+            console.error("Failed to connect to the server");
+            console.error("Error fetching users:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
+    const handleDeleteUser = async (e) => {
+        e.preventDefault();
+
+        if (!selectedUser) {
+            alert("Please select a user!");
+            return;
+        }
+
+        if (!confirmDelete) {
+            alert("Please confirm before deleting!");
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8090/api/users/${selectedUser}`, {
+                method: "DELETE",
+            });
+
+            if (response.ok) {
+                alert(" User deleted successfully!");
+                setSelectedUser("");
+                setConfirmDelete(false);
+                fetchUsers();
+            } else if (response.status === 404) {
+                alert(" User not found!");
+            } else {
+                alert(" Failed to delete user. Server error: " + response.status);
+            }
+        } catch (err) {
+            console.error("Error deleting user:", err);
+            alert("Something went wrong while connecting to the server!");
+        }
+    };
+
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
     return (
-        <Form>
+        <Form onSubmit={handleDeleteUser}>
+
             <Form.Group className="mb-3">
                 <Form.Label>Select User to Remove</Form.Label>
-                <Form.Select>
-                    <option>Select a user...</option>
-                    <option>John Doe (john@example.com)</option>
-                    <option>Jane Smith (jane@example.com)</option>
-                    <option>Robert Johnson (robert@example.com)</option>
+                <Form.Select
+                    value={selectedUser}
+                    onChange={(e) => setSelectedUser(e.target.value)}
+                    required
+                >
+                    <option value="">-- Select a user --</option>
+                    {users.length > 0 ? (
+                        users.map((user) => (
+                            <option key={user.userId} value={user.userId}>
+                                {user.name} - {user.email}
+                            </option>
+                        ))
+                    ) : (
+                        <option disabled>No users found</option>
+                    )}
                 </Form.Select>
             </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Check
-                    type="checkbox"
-                    label="I confirm I want to remove this user"
-                />
-            </Form.Group>
-            <Button variant="danger" type="submit">
-                Remove User
+
+
+            {selectedUser && (
+                <Form.Group className="mb-3">
+                    <Form.Check
+                        type="checkbox"
+                        label="I confirm I want to remove this user"
+                        checked={confirmDelete}
+                        onChange={(e) => setConfirmDelete(e.target.checked)}
+                        required
+                    />
+                </Form.Group>
+            )}
+
+
+            {error && <div className="text-danger mb-3">{error}</div>}
+
+
+            <Button
+                variant="danger"
+                type="submit"
+                disabled={!selectedUser || !confirmDelete || loading}
+            >
+                {loading ? "Processing..." : "Remove User"}
             </Button>
         </Form>
     );
 }
 
-function PaymentForm() {
+
+
+function PaymentForm({ onClose, setError, setSuccess }) {
+    const [users, setUsers] = useState([]);
+    const [formData, setFormData] = useState({
+        userId: "",
+        month: "",
+        monthlyCharge: ""
+    });
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchUsersForPayment = async () => {
+            try {
+                setLoading(true);
+                const response = await fetch("http://localhost:8090/api/users");
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setUsers(data);
+                    if (setError) setError("");
+                } else {
+                    if (setError) setError("Failed to fetch users");
+                    console.error("Fetch users failed:", response.status);
+                }
+            } catch (err) {
+                if (setError) setError("Failed to connect to the server");
+                console.error("Error fetching users:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUsersForPayment();
+    }, [setError]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        if (setError) setError("");
+
+        try {
+
+            const monthDate = formData.month ? `${formData.month}-01` : null;
+
+
+            const requestBody = {
+                user: { userId: parseInt(formData.userId) },
+                month: monthDate,
+                monthlyCharge: parseFloat(formData.monthlyCharge) || 0,
+                paidAmount: 0,
+                status: "PENDING"
+            };
+
+            console.log("Sending payment data:", requestBody);
+
+
+            const response = await fetch("http://localhost:8090/api/payments/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (setSuccess) setSuccess("Payment created successfully!");
+                console.log("Payment created:", data);
+
+                // Close modal after success
+                setTimeout(() => {
+                    if (onClose) onClose();
+                }, 1500);
+            } else {
+                const errorData = await response.json();
+                if (setError) setError(`Failed to create payment: ${errorData.message || response.status}`);
+                console.error("Error creating payment:", response.status, errorData);
+            }
+        } catch (err) {
+            if (setError) setError("Something went wrong while creating payment");
+            console.error("Error:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
-        <Form>
+        <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
                 <Form.Label>Select User</Form.Label>
-                <Form.Select>
-                    <option>Select a user...</option>
-                    <option>John Doe (john@example.com)</option>
-                    <option>Jane Smith (jane@example.com)</option>
-                    <option>Robert Johnson (robert@example.com)</option>
+                <Form.Select
+                    name="userId"
+                    value={formData.userId}
+                    onChange={handleChange}
+                    required
+                    disabled={loading}
+                >
+                    <option value="">Select a user...</option>
+                    {users.map(user => (
+                        <option key={user.userId} value={user.userId}>
+                            {user.name} ({user.email}) - {user.payment || 'No payment'}
+                        </option>
+                    ))}
                 </Form.Select>
             </Form.Group>
+
             <Form.Group className="mb-3">
                 <Form.Label>Payment Month</Form.Label>
-                <Form.Control type="month" />
+                <Form.Control
+                    type="month"
+                    name="month"
+                    value={formData.month}
+                    onChange={handleChange}
+                    required
+                    disabled={loading}
+                />
             </Form.Group>
+
             <Form.Group className="mb-3">
-                <Form.Label>Amount</Form.Label>
-                <Form.Control type="number" placeholder="Enter amount" />
+                <Form.Label>Monthly Charge Amount</Form.Label>
+                <Form.Control
+                    type="number"
+                    name="monthlyCharge"
+                    placeholder="Enter monthly charge amount"
+                    value={formData.monthlyCharge}
+                    onChange={handleChange}
+                    min="0"
+                    step="0.01"
+                    required
+                    disabled={loading}
+                />
             </Form.Group>
-            <Button variant="success" type="submit">
-                Add Payment
-            </Button>
+
+            <div className="d-flex gap-2 justify-content-end">
+                <Button variant="outline-secondary" onClick={onClose} disabled={loading}>
+                    Cancel
+                </Button>
+                <Button variant="success" type="submit" disabled={loading}>
+                    {loading ? (
+                        <>
+                            <Spinner
+                                as="span"
+                                animation="border"
+                                size="sm"
+                                role="status"
+                                aria-hidden="true"
+                                className="me-2"
+                            />
+                            Processing...
+                        </>
+                    ) : (
+                        "Add Payment"
+                    )}
+                </Button>
+            </div>
         </Form>
     );
 }
