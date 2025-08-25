@@ -1,0 +1,249 @@
+.rooms-page {
+    padding-bottom: 60px;
+}
+
+.rooms-hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-align: center;
+    padding: 100px 20px;
+    margin-bottom: 40px;
+}
+
+.rooms-hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.rooms-hero p {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.rooms-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.rooms-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+    justify-content: center;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+    background: #4361ee;
+    color: white;
+}
+
+.tab-btn.active {
+    background: #4361ee;
+    color: white;
+}
+
+.rooms-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.room-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.room-card:hover {
+    transform: translateY(-5px);
+}
+
+.room-header {
+    padding: 25px;
+    border-bottom: 1px solid #eee;
+}
+
+.room-header h2 {
+    font-size: 1.8rem;
+    color: #1b263b;
+    margin-bottom: 0.5rem;
+}
+
+.room-header p {
+    color: #6c757d;
+}
+
+.room-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    padding: 20px;
+}
+
+.gallery-item {
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    aspect-ratio: 4/3;
+}
+
+.gallery-item:hover {
+    transform: scale(1.03);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.1);
+}
+
+.room-facilities {
+    padding: 20px;
+    background: #f8f9fa;
+}
+
+.room-facilities h3 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: #1b263b;
+}
+
+.room-facilities ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    list-style-type: none;
+}
+
+.room-facilities li {
+    padding: 8px 0;
+    color: #495057;
+    position: relative;
+    padding-left: 25px;
+}
+
+.room-facilities li:before {
+    content: '✓';
+    color: #4361ee;
+    position: absolute;
+    left: 0;
+}
+
+.common-facilities {
+    margin-top: 60px;
+}
+
+.common-facilities h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: #1b263b;
+}
+
+.facilities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.facility-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+}
+
+.facility-item:hover {
+    transform: translateY(-5px);
+}
+
+.facility-icon {
+    font-size: 1.5rem;
+    width: 50px;
+    height: 50px;
+    background: #f0f6ff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.modal-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.modal-content img {
+    max-width: 100%;
+    max-height: 80vh;
+    border-radius: 8px;
+}
+
+.close-btn {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .rooms-hero {
+        padding: 70px 20px;
+    }
+
+    .rooms-hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .facilities-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+}
