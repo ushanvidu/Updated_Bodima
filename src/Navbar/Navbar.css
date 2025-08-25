@@ -1,0 +1,193 @@
+:root {
+    --primary-color: #4a6bff;
+    --secondary-color: #f8f9fa;
+    --text-color: #2d3748;
+    --text-hover: #4a6bff;
+    --transition-speed: 0.3s;
+}
+
+.navbar {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    transition: all var(--transition-speed) ease;
+}
+
+.navbar.scrolled {
+    padding: 10px 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.container {
+    width: 100%;
+    /*max-width: 1200px;*/
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 20px;
+
+}
+
+.navigations {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.left, .right {
+    display:inline-block;
+    align-items: center;
+}
+
+.left a.logo {
+    text-decoration: none;
+    font-size:3.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    transition: all var(--transition-speed) ease;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    margin-left: auto;
+}
+
+.left a.logo:hover {
+    transform: scale(1.05);
+}
+
+.right {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    margin-left: 700px;
+
+
+}
+
+.nav-link {
+    position: relative;
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 40px;
+    font-weight: 500;
+    padding: 5px 0;
+    transition: all var(--transition-speed) ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.link-text {
+    position: relative;
+    z-index: 1;
+}
+
+.link-underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width var(--transition-speed) ease;
+}
+
+.nav-link:hover {
+    color: var(--text-hover);
+}
+
+.nav-link:hover .link-underline {
+    width: 100%;
+}
+
+/*.signin-btn {*/
+/*    background-color: #4a6bff;*/
+/*    color: white !important;*/
+/*    padding: 8px 20px;*/
+/*    border-radius: 25px;*/
+/*    transition: all var(--transition-speed) ease;*/
+/*    z-index: 100;*/
+/*}*/
+
+/*.signin-btn .link-underline {*/
+/*    display: none;*/
+/*}*/
+
+/*.signin-btn:hover {*/
+/*    background-color: #3a56d4;*/
+/*    transform: translateY(-2px);*/
+/*    box-shadow: 0 4px 12px rgba(74, 107, 255, 0.3);*/
+/*}*/
+
+/* Mobile Menu Styles-button eka hdnna one ... */
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1001;
+}
+
+.bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    background-color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.bar.open:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.bar.open:nth-child(2) {
+    opacity: 0;
+}
+
+.bar.open:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .right {
+        position: fixed;
+        top: 0;
+        right: 100%;
+        width: 70%;
+        height: 100vh;
+        background-color: white;
+        flex-direction: column;
+        justify-content: center;
+        gap: 30px;
+        transition: right 0.4s ease;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .right.open {
+        right: 0;
+    }
+
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    .nav-link {
+        font-size: 1.3rem;
+    }
+
+    .signin-btn {
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .left a.logo {
+        font-size: 1.8rem;
+    }
+}
